@@ -1,0 +1,6 @@
+Build the attached Practical Assignment using Java and Playwright 
+in a separate folder. 
+
+The brief requires requirements analysis, risk-ranked scenarios,
+defect identification, detailed cases, executable UI/API automation, 
+README, and AI-usage documentation.

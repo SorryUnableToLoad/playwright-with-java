@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Autocomplete Form Assignment" verbose="2">
+    <test name="Playwright UI and API tests">
+        <classes>
+            <class name="com.assignment.ui.tests.AutocompleteFormUiTest"/>
+            <class name="com.assignment.api.AutocompleteResponseApiTest"/>
+        </classes>
+    </test>
+</suite>

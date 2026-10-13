@@ -1,0 +1,9 @@
+{
+  "format": "manual-export-v1",
+  "note": "Transcript relevant to creation of this repository artifact. Attach any platform-provided complete conversation export before final submission if required by the evaluator.",
+  "messages": [
+    {"role": "user", "content": "let make a assignment will provide you the requirements"},
+    {"role": "user", "content": "do it with java and playwright and make a seperate folder for that"},
+    {"role": "assistant", "content": "Created the isolated Java/Playwright assignment project and documentation."}
+  ]
+}

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><title>Autocomplete form</title>
+<style>.suggestions[hidden],.error-message[hidden],.success-container[hidden]{display:none}.suggestions li{cursor:pointer}.error-message{color:#b00020}.success-container{color:#087f23}</style>
+</head><body><div class="form-container">
+<h1>Autocomplete Form</h1>
+<label for="input-field">Enter a value:</label>
+<input type="text" id="input-field" placeholder="Type here..." autocomplete="off">
+<ul class="suggestions" aria-label="Suggestions"></ul>
+<button id="next-button">Next</button>
+<span class="error-message" role="alert" hidden>Error: Invalid input. Please select a valid suggestion.</span>
+<div class="success-container" role="status" hidden><p>Success! Your response has been recorded.</p></div>
+</div><script>
+const suggestions=['agile methodology','agile methodology process','agile methodology process testing'];
+const input=document.querySelector('#input-field'), list=document.querySelector('.suggestions'), error=document.querySelector('.error-message'), success=document.querySelector('.success-container');
+const matchAnywhere=new URLSearchParams(location.search).get('match')==='anywhere';
+function matches(value){const query=value.toLowerCase();return suggestions.filter(s=>matchAnywhere?s.toLowerCase().includes(query):s.toLowerCase().startsWith(query));}
+function render(){const result=matches(input.value);list.hidden=false;list.replaceChildren(...result.map(s=>{const li=document.createElement('li');li.textContent=s;li.addEventListener('click',()=>select(s));return li;}));}
+function select(value){input.value=value;render();input.focus();}
+input.addEventListener('input',()=>{error.hidden=true;success.hidden=true;render();});
+input.addEventListener('keydown',event=>{if(event.key==='Escape'){input.value='';list.hidden=true;error.hidden=true;}if(event.key==='Enter')submit();});
+document.querySelector('#next-button').addEventListener('click',submit);
+function localTimestamp(date=new Date()){const offset=-date.getTimezoneOffset(),sign=offset>=0?'+':'-',absolute=Math.abs(offset),pad=value=>String(value).padStart(2,'0');return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}${sign}${pad(Math.floor(absolute/60))}:${pad(absolute%60)}`;}
+async function submit(){const text=input.value.trim();if(!suggestions.includes(text)){error.hidden=false;success.hidden=true;return;}const startDate=window.formStartDate||localTimestamp();try{const response=await fetch('/api/responses',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({account_id:'98765',account_email:'test123@gmail.com',start_date:startDate,end_date:localTimestamp(),locale:navigator.language,text:text,suggestion_list:text,completed:true})});if(response.status===200){success.hidden=false;error.hidden=true;}else{success.hidden=true;error.hidden=false;}}catch{success.hidden=true;error.hidden=false;}}
+render();
+</script></body></html>
